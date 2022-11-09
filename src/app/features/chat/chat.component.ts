@@ -9,12 +9,15 @@ import {
 import {
   ChatClientService,
   ChannelActionsContext,
+  ChannelPreviewContext,
   ChannelService,
+  DefaultStreamChatGenerics,
   CustomTemplatesService,
   StreamI18nService,
 } from 'stream-chat-angular';
 import { AuthService } from '../auth/auth.service';
 import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
+import { Channel } from 'stream-chat';
 
 @Component({
   selector: 'app-chat',
@@ -24,6 +27,9 @@ import { catchError, from, map, Observable, of, switchMap } from 'rxjs';
 export class ChatComponent implements OnInit, AfterViewInit {
   @ViewChild('channelActionsTemplate')
   private channelActionsTemplate!: TemplateRef<ChannelActionsContext>;
+
+  @ViewChild('channelPreview')
+  private channelPreview!: TemplateRef<ChannelPreviewContext>;
 
   chatIsReady$!: Observable<boolean>;
 
@@ -38,6 +44,10 @@ export class ChatComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.customTemplatesService.channelActionsTemplate$.next(
       this.channelActionsTemplate
+    );
+
+    this.customTemplatesService.channelPreviewTemplate$.next(
+      this.channelPreview
     );
   }
 
@@ -74,5 +84,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
       }
     );
     from(channel.create());
+  }
+
+  activateChannel(channel: Channel<DefaultStreamChatGenerics>) {
+    this.channelService.setAsActiveChannel(channel);
   }
 }
