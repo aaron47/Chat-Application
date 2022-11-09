@@ -1,0 +1,14 @@
+.header-spacer {
+  flex: 1 1 auto;
+}
+
+.content {
+  height: 100%;
+  padding: 25px 15px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.active {
+  border: 1px solid white;
+}
